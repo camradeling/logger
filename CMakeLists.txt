@@ -1,10 +1,35 @@
 cmake_minimum_required(VERSION 3.10)
 project(logger)
-# Create a static library called "logger" from logger.cpp
-add_library(logger STATIC
-    logger.cpp
+
+# =========================
+# Build-time configuration
+# =========================
+
+# Allow user to override default log level at CMake configure step
+# Example: cmake -DLOGGER_DEFAULT_LEVEL=2 ..
+# 0 = ERROR, 1 = WARN, 2 = INFO, 3 = DEBUG
+option(LOGGER_DEFAULT_LEVEL "Default log level (0=ERROR, 1=WARN, 2=INFO, 3=DEBUG)" 2)
+
+# Pass the log level as a preprocessor macro
+# globally for all targets
+add_library(logger_config INTERFACE)
+target_compile_definitions(logger_config 
+    INTERFACE 
+        LOGGER_DEFAULT_LEVEL=${LOGGER_DEFAULT_LEVEL})
+
+target_include_directories(logger_config
+    INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Expose the current directory so that "logger.h" can be included
-# with #include "logger.h" from other parts of the project
-target_include_directories(logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+# =========================
+# Optional test program
+# =========================
+option(BUILD_LOGGER_TEST "Build logger test program" ON)
+
+if (BUILD_LOGGER_TEST)
+    add_executable(logger_test
+        logger_test.c
+    )
+    target_link_libraries(logger_test PRIVATE logger_config)
+endif()
