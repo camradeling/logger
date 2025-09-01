@@ -8,7 +8,7 @@ project(logger)
 # Allow user to override default log level at CMake configure step
 # Example: cmake -DLOGGER_DEFAULT_LEVEL=2 ..
 # 0 = ERROR, 1 = WARN, 2 = INFO, 3 = DEBUG
-option(LOGGER_DEFAULT_LEVEL "Default log level (0=ERROR, 1=WARN, 2=INFO, 3=DEBUG)" 2)
+set(LOGGER_DEFAULT_LEVEL 2 CACHE STRING "Default log level (0=ERROR, 1=WARN, 2=INFO, 3=DEBUG)")
 
 # Pass the log level as a preprocessor macro
 # globally for all targets
