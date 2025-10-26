@@ -42,7 +42,7 @@
         struct tm *tm_info = localtime(&tv.tv_sec);                       \
         char timebuf[64];                                                 \
         strftime(timebuf, sizeof(timebuf), "%Y-%m-%d %H:%M:%S", tm_info); \
-        fprintf(stderr, "%s.%03ld [%s%s%s] " fmt "\n",                    \
+        fprintf(stdout, "%s.%03ld [%s%s%s] " fmt "\n",                    \
                 timebuf, tv.tv_usec/1000, color, label, ANSI_COLOR_RESET, \
                 ##__VA_ARGS__);                                           \
     }                                                                     \
